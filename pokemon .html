@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon</title>
+    <style>
+       
+          #con {
+              /* border: 1px solid gray; */
+              width: 50%;
+              margin: auto;
+          }
+          table{
+              border: 1px solid gray;
+          }
+           table   tr th{
+              border: 1px solid red;
+          }
+          table td{
+              border: 1px solid red;
+              padding: 10px;
+          }
+
+    </style>
+</head>
+<body>
+    <div id="con">
+        <table class="pok">
+            <tr>
+                <th>No.</th>
+                <th>
+                    Name
+                </th>
+            </tr>
+            
+
+        </table>
+    </div>
+</body>
+<script>
+  
+    var url ="https://pokeapi.co/api/v2/ability/?limit=20&offset=20";
+    var pokData = JSON.parse(localStorage.getItem('pok')) ||
+    fetch(url)
+    .then(function (res){
+        res.json().then(function (res){
+            console.log(res)
+            const data =res.results;
+            localStorage.setItem('pok', JSON.stringify(data));
+            displayData(data);
+        });
+    })
+    .catch(function (err){
+        console.log(err);
+    })
+
+    displayData(pokData);
+    function displayData(pokData){
+        pokData.forEach((ele ,i)=> {
+        //     var box = document.createElement('div');    
+        //     var table =document.createElement('table');
+            var tableRow =document.createElement('tr');
+            var tableHead1 =document.createElement('td');
+            tableHead1.innerText=i+1;
+            var tableHead2 = document.createElement('td');
+            tableHead2.innerText =ele.name;
+            tableRow.append(tableHead1,tableHead2);
+            document.querySelector('.pok').append(tableRow);
+        //     tableHead1.innerText = "pokemen's name";
+
+          
+        });
+    }
+
+
+    
+
+</script>
+</html>
+
+
