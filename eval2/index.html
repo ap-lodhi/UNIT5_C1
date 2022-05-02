@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #con{
+           
+            width:50%;
+            margin: auto;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            
+
+        }
+        #con >div{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #box{
+            width: 50%;
+            margin: auto;
+        }
+        input{
+            
+            padding: 10px;
+        }
+        button{
+            
+            background-color: aqua;
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+
+        <input type="text" id="searchBox" placeholder="Enter city">
+        <button id="btn" onclick="getData()">search 
+        </button>
+        </div>
+   
+ 
+   <div id="con"></div>
+</body>
+<script>
+    var apiKey ="7b70e3042b60ec13dc3f3de03115021c";
+    async function getData(){
+        let city = document.querySelector("#searchBox").value
+        let data = await fetchData(city);
+    }
+
+    async function fetchData(city){
+        try{
+
+            let res=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+            let data = await res.json();
+            console.log(data)
+            displayData(data)
+        }catch {
+
+        }
+
+
+    }
+    // (temp, pressure, humidity, wind speed, sunrise, sunset, weather description)
+    /*
+    {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 6000, …}
+base: "stations"
+clouds: {all: 20}
+cod: 200
+coord: {lon: 77.4, lat: 23.2667}
+dt: 1651505404
+id: 1275841
+main: {temp: 307.28, feels_like: 305, temp_min: 307.28, temp_max: 307.28, pressure: 1005, …}
+name: "Bhopal"
+sys: {type: 1, id: 9063, country: 'IN', sunrise: 1651450592, sunset: 1651497488}
+timezone: 19800
+visibility: 6000
+weather: [{…}]
+wind: {speed: 1.54, deg: 230}
+
+    */
+  function  displayData(data){
+      document.querySelector('#con').innerHTML ="";
+      var img = document.createElement('img');
+      
+      if(data.weather[0].main =="Clouds"){
+        img.src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeDlSJldFraRwZgT0G43ghsMfBJ76r3WFcxQ&usqp=CAU";
+      }else{
+          img.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAgpVk6bBk3hBwYQuZOf7axTaCSc6HS6lJFw&usqp=CAU";
+      }
+    var  box =document.createElement('div');
+
+    var temp =document.createElement('p');
+    temp.textContent= ` temp: ${data.main.temp}`;
+
+    var name =document.createElement('p');
+    name.textContent= ` Name: ${data.name}`;
+
+    var pressure =document.createElement('p');
+    pressure.textContent=`pressure: ${data.main.pressure}`
+
+    var humidity =document.createElement('p');
+    humidity.textContent=`humidity: ${data.main.humidity}`
+
+    var speed =document.createElement('p');
+    speed.textContent=`speed: ${data.wind.speed}`
+
+    var sunrise =document.createElement('p');
+    sunrise.textContent=`sunrise: ${data.sys.sunrise}`
+
+    var sunset =document.createElement('p');
+    sunset.textContent=`sunrset: ${data.sys.sunset}`
+
+    var des =document.createElement('p');
+    des.textContent=`Weather description: ${data.weather[0].description}`
+    
+
+
+    
+    box.append(name, img,temp,pressure,humidity,speed,sunrise,sunset,des);
+    con.append(box)
+
+    }
+     
+    //  function
+</script>
+</html>
